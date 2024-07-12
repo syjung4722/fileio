@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication1Dlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMFCApplication1Dlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -152,3 +153,46 @@ HCURSOR CMFCApplication1Dlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMFCApplication1Dlg::OnBnClickedButton1()
+{
+	//포맷	
+	
+	//14	C:\대피소자동삭제테스트욤
+	//1	\
+	//240	tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
+	//4	.txt
+	//259	
+
+	// 특징
+	// 260 까지 문자열 사용하려면 "C:\\대피소자동삭제테스트욤2" 이렇게 사용하면 됨.
+	// 파일 생성 불가 메시지 발생 (이게 정상임)
+
+	CString strFisrstDir = L"C:\\대피소자동삭제테스트욤"; // 14
+	CreateDirectory(strFisrstDir, NULL);
+
+	CString strFile(_T(""));
+
+	for (int i = 0; i < 244-4/*(.txt)*/; i++)
+	{
+		strFile += L"t";
+	}
+	strFile += L".txt"; // 4
+
+	int sizeOfString1 = strFisrstDir.GetLength();
+	int sizeOfString2 = strFile.GetLength();
+
+	CString strDrivePath;
+	strDrivePath.Format(L"%s", strFisrstDir + "\\" + strFile); // \\ == 1
+
+	int nMaxPathLength = strDrivePath.GetLength();
+
+	HANDLE hFile = ::CreateFile(strDrivePath, 0, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		AfxMessageBox(_T("INVALID_HANDLE_VALUE"));
+		return;
+	}
+}
