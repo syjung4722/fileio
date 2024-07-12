@@ -157,6 +157,9 @@ HCURSOR CMFCApplication1Dlg::OnQueryDragIcon()
 
 void CMFCApplication1Dlg::OnBnClickedButton1()
 {
+	// 구현
+	// 디렉토리 생성 + 파일명 생성 + 파일 확장자 + null (최대 경로 길이:260) 구현
+
 	//포맷	
 	
 	//14	C:\대피소자동삭제테스트욤
@@ -168,6 +171,7 @@ void CMFCApplication1Dlg::OnBnClickedButton1()
 	// 특징
 	// 260 까지 문자열 사용하려면 "C:\\대피소자동삭제테스트욤2" 이렇게 사용하면 됨.
 	// 파일 생성 불가 메시지 발생 (이게 정상임)
+	// 이유: 문자열 끝 null이 포함되어 있기 때문에 259+null+2 = 261 초과됨, 즉 코드 개발은 null 제외 259까지 구현하는게 정상
 
 	CString strFisrstDir = L"C:\\대피소자동삭제테스트욤"; // 14
 	CreateDirectory(strFisrstDir, NULL);
